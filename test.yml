@@ -1,0 +1,11 @@
+---
+- name: Ghost role tests
+  hosts: all
+  sudo: yes
+
+  roles:
+    - .
+
+  tasks:
+    - meta: flush_handlers
+

@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: Manuel Tiago Pereira
+  description: Role for installing Ghost, a blogging platform.
+  license: BSD
+  min_ansible_version: 1.8
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  - name: Debian
+    versions:
+    - wheezy
+    - jessie
+  categories:
+  - web
+dependencies:
+  - role: nodesource.node
+    nodejs_nodesource_pin_priority: "{{ ghost_nodejs_pin_priority }}"
+

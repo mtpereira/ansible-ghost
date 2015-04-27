@@ -1,0 +1,57 @@
+---
+- name: prepare - install unzip
+  apt:
+    pkg: unzip
+    update_cache: yes
+    cache_valid_time: 3600
+    state: installed
+  sudo: yes
+
+- name: prepare - fetch Ghost
+  get_url:
+    url: "{{ ghost_fetch_url }}"
+    dest: "{{ ghost_fetch_dir }}/ghost.zip"
+    mode: 0644
+
+- name: prepare - check if Ghost installation path exists
+  stat:
+    path: "{{ ghost_install_dir | dirname }}"
+  register: ghost_check_install_dir
+
+- name: prepare - create Ghost installation path if necessary
+  file:
+    dest: "{{ ghost_install_dir | dirname }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  when: not ghost_check_install_dir.stat.exists
+
+- name: prepare - add Ghost group
+  group:
+    name: "{{ ghost_user_group }}"
+    system: yes
+    state: present
+  sudo: yes
+
+- name: prepare - add Ghost user
+  user:
+    name: "{{ ghost_user_name }}"
+    group: "{{ ghost_user_group }}"
+    home: "{{ ghost_install_dir }}"
+    createhome: yes
+    shell: /bin/false
+    system: yes
+    state: present
+  sudo: yes
+
+- name: prepare - unzip Ghost
+  unarchive:
+    src: "{{ ghost_fetch_dir }}/ghost.zip"
+    dest: "{{ ghost_install_dir }}"
+    owner: "{{ ghost_user_name }}"
+    group: "{{ ghost_user_group }}"
+    copy: no
+#  sudo_user: "{{ ghost_user_name }}"
+  sudo: yes
+

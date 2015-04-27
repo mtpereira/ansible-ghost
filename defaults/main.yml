@@ -1,0 +1,6 @@
+---
+ghost_install_dir: /var/www/ghost
+
+ghost_user_name: ghost
+ghost_user_group: ghost
+

@@ -1,0 +1,15 @@
+---
+- include: prepare.yml
+  tags: ghost_prepare
+
+- name: main - get libc version
+  command: dpkg-query -W -f '${version}\n' libc6
+  register: libc_version
+
+- include: sqlite3.yml
+  when: libc_version.stdout | version_compare("2.14", "<")
+  tags: ghost_sqlite3
+
+- include: install.yml
+  tags: ghost_install
+

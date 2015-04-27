@@ -1,0 +1,9 @@
+---
+- name: install - install Ghost
+  npm:
+    path: "{{ ghost_install_dir }}"
+    production: yes
+    state: present
+#  sudo_user: "{{ ghost_user_name }}"
+  sudo: yes
+
