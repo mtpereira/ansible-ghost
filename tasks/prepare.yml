@@ -52,6 +52,5 @@
     owner: "{{ ghost_user_name }}"
     group: "{{ ghost_user_group }}"
     copy: no
-#  sudo_user: "{{ ghost_user_name }}"
   sudo: yes
 
