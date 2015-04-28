@@ -9,3 +9,11 @@
   tasks:
     - meta: flush_handlers
 
+    - name: tests - check if ghost is listening
+      command: curl {{ ghost_config_url }}
+      register: ghost_test_listening
+
+    - name: tests - assert that ghost is listening
+      assert:
+        that: ghost_test_listening.stdout != ""
+
