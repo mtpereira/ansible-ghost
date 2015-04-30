@@ -1,7 +1,7 @@
 ---
-- name: Ghost role tests
+- name: tests - apply role
   hosts: all
-  sudo: yes
+  tags: ghost_tests_apply
 
   roles:
     - .
@@ -9,11 +9,36 @@
   tasks:
     - meta: flush_handlers
 
+    - name: tests - install curl
+      apt:
+        pkg: curl
+        state: present
+      sudo: yes
+
+- name: tests - run tests
+  hosts: all
+  tags: ghost_tests_run
+
+  vars_files:
+    - defaults/main.yml
+    - vars/main.yml
+
+  tasks:
     - name: tests - check if ghost is listening
-      command: curl {{ ghost_config_url }}
+      command: curl --silent {{ ghost_config_url }}
+      ignore_errors: yes
       register: ghost_test_listening
 
-    - name: tests - assert that ghost is listening
+    - name: tests - check why ghost is not listening
+      command: node {{ ghost_install_dir }}/index.js
+      args:
+        chdir: "{{ ghost_install_dir }}"
+        env:
+          NODE_ENV: production
+      ignore_errors: yes
+      when: ghost_test_listening | failed
+
+    - name: tests - assert that Ghost is listening
       assert:
-        that: ghost_test_listening.stdout != ""
+        that: "{{ ghost_test_listening | success }}"
 
