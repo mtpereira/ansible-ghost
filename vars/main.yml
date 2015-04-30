@@ -3,4 +3,5 @@ ghost_fetch_url: https://ghost.org/zip/ghost-latest.zip
 ghost_fetch_dir: /tmp
 
 ghost_nodejs_pin_priority: 500
+ghost_nodejs_path: /usr/bin/node
 

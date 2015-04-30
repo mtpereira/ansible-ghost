@@ -1,0 +1,7 @@
+---
+- name: ghost - restart service
+  service:
+    name: ghost
+    state: restarted
+  sudo: yes
+

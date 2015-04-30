@@ -1,0 +1,17 @@
+// Managed by Ansible, do not edit!
+
+var path = require('path'),
+    config;
+
+config = {
+    production: {
+        "url": "{{ ghost_config_url }}",
+        "mail": {{ ghost_config_mail | to_json }},
+        "database": {{ ghost_config_database | to_json }},
+        "server": {{ ghost_config_server | to_json }}
+    }
+};
+
+// Export config
+module.exports = config;
+

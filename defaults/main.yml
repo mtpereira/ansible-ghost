@@ -5,11 +5,11 @@ ghost_user_name: ghost
 ghost_user_group: ghost
 
 ghost_config_url: http://{{ ghost_config_server.host }}:{{ ghost_config_server.port }}
-ghost_config_mail: []
+ghost_config_mail: {}
 ghost_config_database:
   client: "sqlite3"
   connection:
-    filename: path.join(__dirname, '/content/data/ghost.db')
+    filename: "{{ ghost_install_dir }}/content/data/ghost.db"
   debug: "false"
 ghost_config_server:
   host: "127.0.0.1"
