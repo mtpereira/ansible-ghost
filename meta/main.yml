@@ -17,4 +17,5 @@ galaxy_info:
 dependencies:
   - role: nodesource.node
     nodejs_nodesource_pin_priority: "{{ ghost_nodejs_pin_priority }}"
+    sudo: yes
 
