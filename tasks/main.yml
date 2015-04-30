@@ -4,6 +4,7 @@
 
 - name: main - get libc version
   command: dpkg-query -W -f '${version}\n' libc6
+  changed_when: false
   register: libc_version
 
 - include: sqlite3.yml
