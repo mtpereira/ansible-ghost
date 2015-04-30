@@ -52,6 +52,7 @@ Vagrant.configure("2") do |config|
       machine.vm.provision :ansible do |ansible|
         ansible.playbook = "test.yml"
         ansible.verbose = ENV['ANSIBLE_VERBOSE'] ||= "v"
+        ansible.tags = ENV['ANSIBLE_TAGS'] ||= "all"
       end
     end
   end
