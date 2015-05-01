@@ -15,3 +15,6 @@ ghost_config_server:
   host: "127.0.0.1"
   port: "2368"
 
+ghost_nginx_enabled: yes
+ghost_nginx_port: 80
+

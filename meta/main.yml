@@ -18,4 +18,9 @@ dependencies:
   - role: nodesource.node
     nodejs_nodesource_pin_priority: "{{ ghost_nodejs_pin_priority }}"
     sudo: yes
+  - role: jdauphant.nginx
+    nginx_sites: "{{ ghost_nginx_sites }}"
+    when: ghost_nginx_enabled
+    sudo: yes
+    tags: ghost_nginx
 
