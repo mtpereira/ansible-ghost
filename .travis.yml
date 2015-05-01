@@ -13,7 +13,7 @@ install:
 
 before_script:
   - echo localhost > inventory
-  - ansible-galaxy --role-file requirements.yml
+  - ansible-galaxy install --role-file requirements.yml
 
 script:
   - ansible-playbook --syntax-check -i inventory test.yml

@@ -36,6 +36,8 @@
         env:
           NODE_ENV: production
       ignore_errors: yes
+      sudo_user: "{{ ghost_user_name }}"
+      sudo: yes
       when: ghost_test_listening | failed
 
     - name: tests - assert that Ghost is listening
