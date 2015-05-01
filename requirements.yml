@@ -1,4 +1,4 @@
 ---
-- name: nodesource.node
+- src: nodesource.node
   version: master
 
