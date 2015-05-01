@@ -1,0 +1,4 @@
+---
+- name: nodesource.node
+  version: master
+
