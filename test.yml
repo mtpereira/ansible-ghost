@@ -31,6 +31,7 @@
   tasks:
     - name: tests - check if ghost is listening
       command: curl --silent {{ ghost_config_url }}
+      changed_when: false
       ignore_errors: yes
       register: ghost_test_listening
 
@@ -40,6 +41,7 @@
         chdir: "{{ ghost_install_dir }}"
         env:
           NODE_ENV: production
+      changed_when: false
       ignore_errors: yes
       sudo_user: "{{ ghost_user_name }}"
       sudo: yes

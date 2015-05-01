@@ -53,5 +53,7 @@
     owner: "{{ ghost_user_name }}"
     group: "{{ ghost_user_group }}"
     copy: no
+    creates: "{{ ghost_install_dir }}/index.js"
+  sudo_user: "{{ ghost_user_name }}"
   sudo: yes
 
