@@ -9,6 +9,11 @@
   tasks:
     - meta: flush_handlers
 
+    - name: tests - sleep for Ghost startup
+      pause:
+        seconds: 15
+        prompt: "Waiting for Ghost startup..."
+
     - name: tests - install curl
       apt:
         pkg: curl
