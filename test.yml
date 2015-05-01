@@ -52,3 +52,23 @@
       assert:
         that: "{{ ghost_test_listening | success }}"
 
+    - name: tests - check if Nginx is proxying Ghost
+      command: curl --silent localhost:{{ ghost_nginx_port }}
+      changed_when: false
+      ignore_errors: yes
+      register: ghost_test_nginx_proxy
+
+    - name: tests - assert that Nginx is proxying Ghost
+      assert:
+        that: "{{ ghost_test_nginx_proxy | success }}"
+
+    - name: tests - check if Ghost admin is protected from outside
+      command: curl --silent --head localhost:{{ ghost_nginx_port }}/ghost/setup/
+      changed_when: false
+      ignore_errors: yes
+      register: ghost_test_nginx_admin
+
+    - name: tests - assert that Ghost admin is protected from outside
+      assert:
+        that: "'404 Not Found' in ghost_test_nginx_admin.stdout"
+

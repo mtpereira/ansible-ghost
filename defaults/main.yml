@@ -17,4 +17,5 @@ ghost_config_server:
 
 ghost_nginx_enabled: yes
 ghost_nginx_port: 80
+ghost_nginx_admin_allowed_cidr: "127.0.0.1/32"
 
