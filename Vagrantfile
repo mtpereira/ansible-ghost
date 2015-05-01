@@ -49,6 +49,10 @@ Vagrant.configure("2") do |config|
         end
       end
 
+      machine.vm.provision :shell do |shell|
+        shell.inline = "sed -i -e 's/%sudo\tALL=NOPASSWD:ALL/%sudo\tALL=(ALL:ALL) ALL/' /etc/sudoers"
+      end
+
       machine.vm.provision :ansible do |ansible|
         ansible.playbook = "test.yml"
         ansible.verbose = ENV['ANSIBLE_VERBOSE'] ||= "v"
