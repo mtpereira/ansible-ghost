@@ -9,5 +9,8 @@ ghost_nginx_sites:
   ghost:
     - listen {{ ghost_nginx_port }}
     - server_name {{ ghost_config_server.host }}
-    - location / { proxy_set_header X-Real-IP $remote_addr; proxy_set_header Host $http_host; proxy_pass {{ ghost_config_url }}; }
+    - proxy_set_header X-Real-IP $remote_addr
+    - proxy_set_header Host $http_host
+    - location / { proxy_pass {{ ghost_config_url }}; }
+    - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
 
