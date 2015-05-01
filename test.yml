@@ -17,6 +17,7 @@
     - name: tests - install curl
       apt:
         pkg: curl
+        install_recommends: no
         state: present
       sudo: yes
 
