@@ -2,3 +2,6 @@
 - src: nodesource.node
   version: master
 
+- src: jdauphant.nginx
+  version: v1.3.4
+
