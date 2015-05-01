@@ -25,6 +25,7 @@
     group: root
     mode: 0755
     state: directory
+  sudo: yes
   when: not ghost_check_install_dir.stat.exists
 
 - name: prepare - add Ghost group
