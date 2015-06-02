@@ -6,9 +6,7 @@
   roles:
     - .
 
-  tasks:
-    - meta: flush_handlers
-
+  post_tasks:
     - name: tests - sleep for Ghost startup
       pause:
         seconds: 15
