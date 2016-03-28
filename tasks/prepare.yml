@@ -41,7 +41,7 @@
     group: "{{ ghost_user_group }}"
     home: "{{ ghost_install_dir }}"
     createhome: yes
-    shell: /bin/false
+    shell: /bin/bash
     system: yes
     state: present
   sudo: yes
@@ -54,6 +54,12 @@
     group: "{{ ghost_user_group }}"
     copy: no
     creates: "{{ ghost_install_dir }}/index.js"
-  sudo_user: "{{ ghost_user_name }}"
   sudo: yes
 
+- name: prepare - Make sure user owns folders
+  file:
+    path: "{{ ghost_install_dir }}"
+    owner: "{{ ghost_user_name }}"
+    group: "{{ ghost_user_group }}"
+    recurse: yes
+  sudo: yes
