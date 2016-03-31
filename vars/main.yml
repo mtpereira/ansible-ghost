@@ -5,12 +5,13 @@ ghost_fetch_dir: /tmp
 ghost_nodejs_pin_priority: 500
 ghost_nodejs_path: /usr/bin/node
 
+ghost_internal_url: http://{{ ghost_config_server.host }}:{{ ghost_config_server.port }}
+
 ghost_nginx_sites:
   ghost:
     - listen {{ ghost_nginx_port }}
     - server_name {{ ghost_config_server.host }}
     - proxy_set_header X-Real-IP $remote_addr
     - proxy_set_header Host $http_host
-    - location / { proxy_pass {{ ghost_config_url }}; }
+    - location / { proxy_pass {{ ghost_internal_url }}; }
     - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
-
