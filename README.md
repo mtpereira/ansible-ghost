@@ -23,11 +23,11 @@ If you want to forward the port, use **Nginx**.
 
 Quick (Full) Use
 ---------
-
-`git clone https://github.com/Oefenweb/ansible-nodejs.git  {{ inventory_dir }}/roles/`
-`git clone https://github.com/geerlingguy/ansible-role-nginx.git  {{ inventory_dir }}/roles/`
-`git clone https://github.com/Tinker-Ware/ansible-ghost-blog.git  {{ inventory_dir }}/roles/`
-
+```
+git clone https://github.com/Oefenweb/ansible-nodejs.git  {{ inventory_dir }}/roles/
+git clone https://github.com/geerlingguy/ansible-role-nginx.git  {{ inventory_dir }}/roles/
+git clone https://github.com/Tinker-Ware/ansible-ghost-blog.git  {{ inventory_dir }}/roles/
+```
 `{{ inventory_dir }}/playbook.yml`
 
 
