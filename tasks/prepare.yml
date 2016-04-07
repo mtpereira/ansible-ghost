@@ -12,15 +12,16 @@
     url: "{{ ghost_fetch_url }}"
     dest: "{{ ghost_fetch_dir }}/ghost.zip"
     mode: 0644
+  when: ghost_repo is not defined
 
 - name: prepare - check if Ghost installation path exists
   stat:
-    path: "{{ ghost_install_dir | dirname }}"
+    path: "{{ ghost_install_dir }}"
   register: ghost_check_install_dir
 
 - name: prepare - create Ghost installation path if necessary
   file:
-    dest: "{{ ghost_install_dir | dirname }}"
+    dest: "{{ ghost_install_dir }}"
     owner: root
     group: root
     mode: 0755
@@ -39,7 +40,7 @@
   user:
     name: "{{ ghost_user_name }}"
     group: "{{ ghost_user_group }}"
-    home: "{{ ghost_install_dir }}"
+    home: "/home/{{ ghost_user_name }}"
     createhome: yes
     shell: /bin/bash
     system: yes
@@ -54,6 +55,20 @@
     group: "{{ ghost_user_group }}"
     copy: no
     creates: "{{ ghost_install_dir }}/index.js"
+  when: ghost_repo is not defined
+  sudo: yes
+
+- name: Ensure git is installed
+  apt: name=git state=present
+  when: ghost_repo is defined
+  sudo: true
+
+- name: prepare - clone Ghost files
+  git:
+    repo="{{ ghost_repo }}"
+    dest="{{ ghost_install_dir }}"
+    force=yes
+  when: ghost_repo is defined
   sudo: yes
 
 - name: prepare - Make sure user owns folders
