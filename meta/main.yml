@@ -1,28 +1,12 @@
 ---
 galaxy_info:
-  author: Manuel Tiago Pereira
+  author: aalvz
   description: Role for installing Ghost, a blogging platform.
-  license: BSD
-  min_ansible_version: 1.8
+  license: GNU GPLv3
+  min_ansible_version: 1.7
   platforms:
-  - name: Ubuntu
-    versions:
-    - trusty
   - name: Debian
     versions:
-    - wheezy
     - jessie
   categories:
   - web
-dependencies:
-  - role: nodesource.node
-    nodejs_nodesource_pin_priority: "{{ ghost_nodejs_pin_priority }}"
-    when: ghost_nodejs_enabled
-    sudo: yes
-    tags: ghost_nodejs
-  - role: jdauphant.nginx
-    nginx_sites: "{{ ghost_nginx_sites }}"
-    when: ghost_nginx_enabled
-    sudo: yes
-    tags: ghost_nginx
-

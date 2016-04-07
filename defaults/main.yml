@@ -15,9 +15,19 @@ ghost_config_server:
   host: "127.0.0.1"
   port: "2368"
 
-ghost_nodejs_enabled: yes
-
-ghost_nginx_enabled: yes
-ghost_nginx_port: 80
-ghost_nginx_admin_allowed_cidr: "127.0.0.1/32"
-
+nodejs_version: 'nodejs-v010'
+ghost_nodejs_enabled: no
+ghost_nginx_enabled: no
+ghost_install_dir: '/opt/ghost'
+ghost_user_name: 'ghost'
+ghost_user_group: 'ghost'
+nginx_remove_default_vhost: true
+nginx_vhosts:
+  - server_name: "blog.tinkerware.io"
+    listen: "80"
+    extra_parameters: |
+      location / {
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_pass          http://127.0.0.1:2368;
+      }
