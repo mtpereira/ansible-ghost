@@ -109,3 +109,4 @@ This role is provided by the [Tinkerware](http://tinkerware.io) project
 under a **GNU GPLv3** Licence.
 
 Forked a while ago from [mtpereira](https://github.com/mtpereira/ansible-ghost)
+(But he didn't have his BSD parragraf =/)
