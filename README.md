@@ -28,6 +28,7 @@ Required variables:
 * `ghost_nodejs_enabled`: Enables or disables installing nodejs. Defaults to `yes`.
 * `ghost_nginx_enabled`: Enables or disables configuring a nginx proxy. Defaults to `yes`.
 * `ghost_nginx_port`: Defines the nginx listening port. Defaults to `80`.
+* `ghost_nginx_sites`: Nginx sites configuration passed to [jdauphant.nginx](https://galaxy.ansible.com/list#/roles/466) role. Check its README for more information. The defaults configure a reverse proxy listening on port 80 and denying access to Ghost's admin page except for requests originated from localhost.
 
 Internal variables, avoid changing:
 
@@ -35,7 +36,6 @@ Internal variables, avoid changing:
 * `ghost_fetch_dir`: Directory to store the Ghost zip. Defaults to `/tmp`.
 * `ghost_nodejs_pin_priority`: Pin for `apt-preferences`. Defaults to `500`.
 * `ghost_nodejs_path`: Nodejs binary path. Defaults to `/usr/bin/node`.
-* `ghost_nginx_sites`: Nginx sites configuration passed to [jdauphant.nginx](https://galaxy.ansible.com/list#/roles/466) role. Check its README for more information. The defaults configure a reverse proxy listening on port 80 and denying access to Ghost's admin page except for requests originated from localhost.
 
 Dependencies
 ------------
@@ -59,6 +59,40 @@ Example Playbook
     - hosts: servers
       roles:
          - mtpereira.ghost
+
+For multiple Ghost instances per host:
+
+    - hosts: servers
+      roles:
+        - role: mtpereira.ghost
+          ghost_install_dir: /var/www/ghost_two
+          ghost_config_server:
+            host: "127.0.0.1"
+            port: "2369"
+          ghost_nginx_sites:
+            ghost_two:
+              - listen 8080
+              - server_name {{ ghost_config_server.host }}
+              - proxy_set_header X-Real-IP $remote_addr
+              - proxy_set_header Host $http_host
+              - location / { proxy_pass {{ ghost_internal_url }}; }
+              - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
+        - role: mtpereira.ghost
+          ghost_install_dir: /var/www/ghost_two
+          ghost_config_server:
+            host: "127.0.0.1"
+            port: "2368"
+          ghost_nginx_sites:
+            ghost_one:
+              - listen 80
+              - server_name {{ ghost_config_server.host }}
+              - proxy_set_header X-Real-IP $remote_addr
+              - proxy_set_header Host $http_host
+              - location / { proxy_pass {{ ghost_internal_url }}; }
+              - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
+
+If you already have you own webserver setup for multiple instances, you can skip
+the `ghosts_nginx_sites` definition.
 
 License
 -------

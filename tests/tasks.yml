@@ -1,0 +1,44 @@
+- name: tests - check if ghost is listening
+  command: curl --silent {{ ghost_config_url }}
+  changed_when: false
+  ignore_errors: yes
+  register: ghost_test_listening
+
+- name: tests - check why ghost is not listening
+  command: node {{ ghost_install_dir }}/index.js
+  args:
+    chdir: "{{ ghost_install_dir }}"
+  environment:
+    NODE_ENV: production
+  changed_when: false
+  ignore_errors: yes
+  sudo_user: "{{ ghost_user_name }}"
+  sudo: yes
+  when: ghost_test_listening | failed
+
+- name: tests - assert that Ghost is listening
+  assert:
+    that: "{{ ghost_test_listening | success }}"
+
+- name: tests - check if Nginx is proxying Ghost
+  command: curl --silent localhost:{{ ghost_nginx_port }}
+  changed_when: false
+  ignore_errors: yes
+  register: ghost_test_nginx_proxy
+
+- name: tests - assert that Nginx is proxying Ghost
+  assert:
+    that:
+      - "{{ ghost_test_nginx_proxy | success }}"
+      - "'502 Bad Gateway' not in ghost_test_nginx_proxy.stdout"
+
+- name: tests - check if Ghost admin is protected from outside
+  command: curl --silent --head localhost:{{ ghost_nginx_port }}/ghost/setup/
+  changed_when: false
+  ignore_errors: yes
+  register: ghost_test_nginx_admin
+
+- name: tests - assert that Ghost admin is protected from outside
+  assert:
+    that: "'404 Not Found' in ghost_test_nginx_admin.stdout"
+

@@ -1,15 +1,29 @@
 ---
-- name: tests - apply role
+- name: tests - apply role for ghost_one
   hosts: all
   tags: ghost_tests_apply
 
+  vars:
+    ghost_install_dir: /var/www/ghost_one
+    ghost_config_server:
+      host: "127.0.0.1"
+      port: "2368"
+    ghost_nginx_sites:
+      ghost_one:
+        - listen 80
+        - server_name {{ ghost_config_server.host }}
+        - proxy_set_header X-Real-IP $remote_addr
+        - proxy_set_header Host $http_host
+        - location / { proxy_pass {{ ghost_internal_url }}; }
+        - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
+
   roles:
-    - .
+      - role: .
 
   post_tasks:
     - name: tests - sleep for Ghost startup
       pause:
-        seconds: 15
+        seconds: 30
         prompt: "Waiting for Ghost startup..."
 
     - name: tests - install curl
@@ -19,54 +33,35 @@
         state: present
       sudo: yes
 
-- name: tests - run tests
+    - include: tests/tasks.yml
+
+- name: tests - apply role for ghost_two
   hosts: all
-  tags: ghost_tests_run
+  tags: ghost_tests_apply
 
-  vars_files:
-    - defaults/main.yml
-    - vars/main.yml
+  vars:
+    ghost_install_dir: /var/www/ghost_two
+    ghost_config_server:
+      host: "127.0.0.1"
+      port: "2369"
+    ghost_nginx_sites:
+        ghost_two:
+          - listen 8080
+          - server_name {{ ghost_config_server.host }}
+          - proxy_set_header X-Real-IP $remote_addr
+          - proxy_set_header Host $http_host
+          - location / { proxy_pass {{ ghost_internal_url }}; }
+          - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
 
-  tasks:
-    - name: tests - check if ghost is listening
-      command: curl --silent {{ ghost_config_url }}
-      changed_when: false
-      ignore_errors: yes
-      register: ghost_test_listening
 
-    - name: tests - check why ghost is not listening
-      command: node {{ ghost_install_dir }}/index.js
-      args:
-        chdir: "{{ ghost_install_dir }}"
-        env:
-          NODE_ENV: production
-      changed_when: false
-      ignore_errors: yes
-      sudo_user: "{{ ghost_user_name }}"
-      sudo: yes
-      when: ghost_test_listening | failed
+  roles:
+      - role: .
 
-    - name: tests - assert that Ghost is listening
-      assert:
-        that: "{{ ghost_test_listening | success }}"
+  post_tasks:
+    - name: tests - sleep for Ghost startup
+      pause:
+        seconds: 30
+        prompt: "Waiting for Ghost startup..."
 
-    - name: tests - check if Nginx is proxying Ghost
-      command: curl --silent localhost:{{ ghost_nginx_port }}
-      changed_when: false
-      ignore_errors: yes
-      register: ghost_test_nginx_proxy
-
-    - name: tests - assert that Nginx is proxying Ghost
-      assert:
-        that: "{{ ghost_test_nginx_proxy | success }}"
-
-    - name: tests - check if Ghost admin is protected from outside
-      command: curl --silent --head localhost:{{ ghost_nginx_port }}/ghost/setup/
-      changed_when: false
-      ignore_errors: yes
-      register: ghost_test_nginx_admin
-
-    - name: tests - assert that Ghost admin is protected from outside
-      assert:
-        that: "'404 Not Found' in ghost_test_nginx_admin.stdout"
+    - include: tests/tasks.yml
 
