@@ -5,20 +5,14 @@
     update_cache: yes
     cache_valid_time: 3600
     state: installed
-  sudo: yes
-
-- name: prepare - fetch Ghost
-  get_url:
-    url: "{{ ghost_fetch_url }}"
-    dest: "{{ ghost_fetch_dir }}/ghost.zip"
-    mode: 0644
+  become: yes
 
 - name: prepare - add Ghost group
   group:
     name: "{{ ghost_user_group }}"
     system: yes
     state: present
-  sudo: yes
+  become: yes
 
 - name: prepare - add Ghost user
   user:
@@ -29,7 +23,15 @@
     shell: /bin/false
     system: yes
     state: present
-  sudo: yes
+  become: yes
+
+- name: prepare - fetch Ghost
+  get_url:
+    url: "{{ ghost_fetch_url }}"
+    dest: "{{ ghost_fetch_dir }}/ghost.zip"
+    mode: 0644
+  become_user: "{{ ghost_user_name }}"
+  become: yes
 
 - name: prepare - check if Ghost installation path exists
   stat:
@@ -43,7 +45,7 @@
     group: "{{ ghost_user_group }}"
     mode: 0755
     state: directory
-  sudo: yes
+  become: yes
   when: not ghost_check_install_dir.stat.exists
 
 - name: prepare - unzip Ghost
@@ -54,6 +56,6 @@
     group: "{{ ghost_user_group }}"
     copy: no
     creates: "{{ ghost_install_dir }}/index.js"
-  sudo_user: "{{ ghost_user_name }}"
-  sudo: yes
+  become_user: "{{ ghost_user_name }}"
+  become: yes
 

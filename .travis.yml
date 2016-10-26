@@ -8,8 +8,9 @@ before_install:
  - sudo apt-get install -qq python-apt python-pycurl
 
 install:
-  - pip install ansible==1.9.1
-  - "printf '[defaults]\\nroles_path = ../' > ansible.cfg"
+  - pip install ansible==2.1.2.0
+  - "printf '[defaults]\\nroles_path = ../\\n' >> ansible.cfg"
+  - "printf '[ssh_connection]\\npipelining = True\\n' >> ansible.cfg"
 
 before_script:
   - echo localhost > inventory

@@ -12,8 +12,8 @@
     NODE_ENV: production
   changed_when: false
   ignore_errors: yes
-  sudo_user: "{{ ghost_user_name }}"
-  sudo: yes
+  become_user: "{{ ghost_user_name }}"
+  become: yes
   when: ghost_test_listening | failed
 
 - name: tests - assert that Ghost is listening

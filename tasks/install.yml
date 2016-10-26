@@ -4,8 +4,8 @@
     path: "{{ ghost_install_dir }}"
     production: yes
     state: present
-  sudo_user: "{{ ghost_user_name }}"
-  sudo: yes
+  become_user: "{{ ghost_user_name }}"
+  become: yes
 
 - name: install - add configurations
   template:
@@ -15,7 +15,7 @@
     group: "{{ ghost_user_group }}"
     mode: 0644
   notify: ghost - restart service
-  sudo: yes
+  become: yes
 
 - name: install - add init script
   template:
@@ -24,12 +24,12 @@
     owner: root
     group: root
     mode: 0755
-  sudo: yes
+  become: yes
 
 - name: install - enable Ghost service
   service:
     name: "{{ ghost_service_name }}"
     enabled: yes
     state: started
-  sudo: yes
+  become: yes
 
