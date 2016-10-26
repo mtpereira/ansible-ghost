@@ -1,7 +1,7 @@
 ---
 - name: ghost - restart service
   service:
-    name: ghost
+    name: "{{ ghost_service_name }}"
     state: restarted
   sudo: yes
 

@@ -13,21 +13,6 @@
     dest: "{{ ghost_fetch_dir }}/ghost.zip"
     mode: 0644
 
-- name: prepare - check if Ghost installation path exists
-  stat:
-    path: "{{ ghost_install_dir | dirname }}"
-  register: ghost_check_install_dir
-
-- name: prepare - create Ghost installation path if necessary
-  file:
-    dest: "{{ ghost_install_dir | dirname }}"
-    owner: root
-    group: root
-    mode: 0755
-    state: directory
-  sudo: yes
-  when: not ghost_check_install_dir.stat.exists
-
 - name: prepare - add Ghost group
   group:
     name: "{{ ghost_user_group }}"
@@ -39,12 +24,27 @@
   user:
     name: "{{ ghost_user_name }}"
     group: "{{ ghost_user_group }}"
-    home: "{{ ghost_install_dir }}"
+    home: "{{ ghost_install_dir | dirname }}"
     createhome: yes
     shell: /bin/false
     system: yes
     state: present
   sudo: yes
+
+- name: prepare - check if Ghost installation path exists
+  stat:
+    path: "{{ ghost_install_dir }}"
+  register: ghost_check_install_dir
+
+- name: prepare - create Ghost installation path if necessary
+  file:
+    dest: "{{ ghost_install_dir }}"
+    owner: "{{ ghost_user_name }}"
+    group: "{{ ghost_user_group }}"
+    mode: 0755
+    state: directory
+  sudo: yes
+  when: not ghost_check_install_dir.stat.exists
 
 - name: prepare - unzip Ghost
   unarchive:

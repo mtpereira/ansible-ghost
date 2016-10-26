@@ -20,7 +20,7 @@
 - name: install - add init script
   template:
     src: init.ghost.j2
-    dest: /etc/init.d/ghost
+    dest: "/etc/init.d/{{ ghost_service_name }}"
     owner: root
     group: root
     mode: 0755
@@ -28,7 +28,7 @@
 
 - name: install - enable Ghost service
   service:
-    name: ghost
+    name: "{{ ghost_service_name }}"
     enabled: yes
     state: started
   sudo: yes
