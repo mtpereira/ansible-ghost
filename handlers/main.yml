@@ -3,5 +3,5 @@
   service:
     name: "{{ ghost_service_name }}"
     state: restarted
-  sudo: yes
+  become: yes
 

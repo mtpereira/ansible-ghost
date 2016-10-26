@@ -31,7 +31,7 @@
         pkg: curl
         install_recommends: no
         state: present
-      sudo: yes
+      become: yes
 
     - include: tests/tasks.yml
 
