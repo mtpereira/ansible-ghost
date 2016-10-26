@@ -7,12 +7,6 @@
     state: installed
   become: yes
 
-- name: prepare - fetch Ghost
-  get_url:
-    url: "{{ ghost_fetch_url }}"
-    dest: "{{ ghost_fetch_dir }}/ghost.zip"
-    mode: 0644
-
 - name: prepare - add Ghost group
   group:
     name: "{{ ghost_user_group }}"
@@ -29,6 +23,14 @@
     shell: /bin/false
     system: yes
     state: present
+  become: yes
+
+- name: prepare - fetch Ghost
+  get_url:
+    url: "{{ ghost_fetch_url }}"
+    dest: "{{ ghost_fetch_dir }}/ghost.zip"
+    mode: 0644
+  become_user: "{{ ghost_user_name }}"
   become: yes
 
 - name: prepare - check if Ghost installation path exists

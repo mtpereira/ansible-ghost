@@ -9,7 +9,8 @@ before_install:
 
 install:
   - pip install ansible==2.1.2.0
-  - "printf '[defaults]\\nroles_path = ../' > ansible.cfg"
+  - "printf '[defaults]\\nroles_path = ../\\n' >> ansible.cfg"
+  - "printf '[ssh_connection]\\npipelining = True\\n' >> ansible.cfg"
 
 before_script:
   - echo localhost > inventory
