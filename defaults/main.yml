@@ -3,6 +3,7 @@ ghost_install_dir: /var/www/ghost
 
 ghost_user_name: ghost
 ghost_user_group: ghost
+ghost_user_home: "{{ ghost_install_dir | dirname }}"
 
 ghost_config_url: http://{{ ghost_config_server.host }}:{{ ghost_config_server.port }}
 ghost_config_mail: {}

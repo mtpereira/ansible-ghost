@@ -18,7 +18,7 @@
   user:
     name: "{{ ghost_user_name }}"
     group: "{{ ghost_user_group }}"
-    home: "{{ ghost_install_dir | dirname }}"
+    home: "{{ ghost_user_home }}"
     createhome: yes
     shell: /bin/false
     system: yes
@@ -31,6 +31,15 @@
     dest: "{{ ghost_fetch_dir }}/ghost.zip"
     mode: 0644
   become_user: "{{ ghost_user_name }}"
+  become: yes
+
+- name: prepare - change Ghost user home permissions
+  file:
+    dest: "{{ ghost_user_home }}"
+    owner: "{{ ghost_user_name }}"
+    group: "{{ ghost_user_group }}"
+    mode: 0755
+    state: directory
   become: yes
 
 - name: prepare - check if Ghost installation path exists
