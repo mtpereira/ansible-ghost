@@ -1,6 +1,6 @@
 boxes = {
   "ghost-debian-wheezy" => {
-    :box => "boxcutter/debian81",
+    :box => "boxcutter/debian8",
     :ip  => '10.0.21.2',
     :cpu => "100",
     :ram => "512"
