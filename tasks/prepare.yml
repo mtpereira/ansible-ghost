@@ -29,7 +29,6 @@
   get_url:
     url: "{{ ghost_fetch_url }}"
     dest: "{{ ghost_fetch_dir }}/ghost.zip"
-    mode: 0644
   become_user: "{{ ghost_user_name }}"
   become: yes
 

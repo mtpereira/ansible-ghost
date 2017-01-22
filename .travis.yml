@@ -8,7 +8,7 @@ before_install:
  - sudo apt-get install -qq python-apt python-pycurl
 
 install:
-  - pip install ansible==2.1.2.0
+  - pip install ansible==2.2.1.0
   - "printf '[defaults]\\nroles_path = ../\\n' >> ansible.cfg"
   - "printf '[ssh_connection]\\npipelining = True\\n' >> ansible.cfg"
 
@@ -17,12 +17,12 @@ before_script:
   - ansible-galaxy install --role-file requirements.yml
 
 script:
-  - ansible-playbook --syntax-check -i inventory test.yml
-  - ansible-playbook -i inventory test.yml --connection=local --sudo
+  - ansible-playbook --syntax-check -i inventory tests/test.yml
+  - ansible-playbook -i inventory tests/test.yml --connection=local --sudo
   # Taken from https://servercheck.in/blog/testing-ansible-roles-travis-ci-github
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i inventory test.yml --connection=local --sudo
+    ansible-playbook -i inventory tests/test.yml --connection=local --sudo
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)

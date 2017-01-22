@@ -16,9 +16,8 @@
         - proxy_set_header Host $http_host
         - location / { proxy_pass {{ ghost_internal_url }}; }
         - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
-
   roles:
-      - role: .
+      - role: ../..
 
   post_tasks:
     - name: tests - sleep for Ghost startup
@@ -33,7 +32,7 @@
         state: present
       become: yes
 
-    - include: tests/tasks.yml
+    - include: tasks.yml
 
 - name: tests - apply role for ghost_two
   hosts: all
@@ -52,10 +51,8 @@
           - proxy_set_header Host $http_host
           - location / { proxy_pass {{ ghost_internal_url }}; }
           - location ~ ^/ghost/setup { allow {{ ghost_nginx_admin_allowed_cidr }}; deny all; }
-
-
   roles:
-      - role: .
+      - role: ../..
 
   post_tasks:
     - name: tests - sleep for Ghost startup
@@ -63,5 +60,5 @@
         seconds: 30
         prompt: "Waiting for Ghost startup..."
 
-    - include: tests/tasks.yml
+    - include: tasks.yml
 
