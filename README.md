@@ -40,8 +40,8 @@ Internal variables, avoid changing:
 Dependencies
 ------------
 
-* [nodesource.node](https://galaxy.ansible.com/list#/roles/1488)
-* [jdauphant.nginx](https://galaxy.ansible.com/list#/roles/466)
+* [SimpliField.node](https://galaxy.ansible.com/SimpliField/node/)
+* [jdauphant.nginx](https://galaxy.ansible.com/jdauphant/nginx/)
 
 These roles can be installed by running `ansible-galaxy install -r requirements.yml`.
 
@@ -102,7 +102,9 @@ BSD
 Author Information
 ------------------
 
-Thanks to [nodesource](https://nodesource.com/) for the Nodejs packages repository and Ansible role.
+Thanks to [nodesource](https://nodesource.com/) for the Nodejs packages repository
+
+Thanks to [SimpliField](http://www.simplifield.com/) for the Ansible role.
 
 Thanks to [jdauphant](https://github.com/jdauphant/) for the Nginx role.
 
