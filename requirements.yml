@@ -1,6 +1,6 @@
 ---
-- src: nodesource.node
-  version: 39f338b
+- src: SimpliField.node
+  version: v1.0.7
 
 - src: jdauphant.nginx
   version: v2.7.1

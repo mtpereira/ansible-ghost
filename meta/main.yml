@@ -15,8 +15,7 @@ galaxy_info:
   categories:
   - web
 dependencies:
-  - role: nodesource.node
-    nodejs_nodesource_pin_priority: "{{ ghost_nodejs_pin_priority }}"
+  - role: SimpliField.node
     when: ghost_nodejs_enabled
     become: yes
     tags: ghost_nodejs
