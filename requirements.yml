@@ -1,6 +1,7 @@
 ---
-- src: SimpliField.node
-  version: v1.0.7
+- src: https://github.com/SimpliField/ansible-node
+  name: SimpliField.node
+  version: f9bd9ed
 
 - src: jdauphant.nginx
   version: v2.7.1
