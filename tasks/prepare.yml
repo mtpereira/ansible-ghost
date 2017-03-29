@@ -29,7 +29,6 @@
   get_url:
     url: "{{ ghost_fetch_url }}"
     dest: "{{ ghost_fetch_dir }}/ghost.zip"
-  become_user: "{{ ghost_user_name }}"
   become: yes
 
 - name: prepare - change Ghost user home permissions
@@ -64,6 +63,5 @@
     group: "{{ ghost_user_group }}"
     copy: no
     creates: "{{ ghost_install_dir }}/index.js"
-  become_user: "{{ ghost_user_name }}"
   become: yes
 
