@@ -16,6 +16,7 @@ galaxy_info:
   - web
 dependencies:
   - role: SimpliField.node
+    nodejs_packages_update_cache: yes
     when: ghost_nodejs_enabled
     become: yes
     tags: ghost_nodejs
