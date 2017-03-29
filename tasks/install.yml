@@ -4,7 +4,6 @@
     path: "{{ ghost_install_dir }}"
     production: yes
     state: present
-  become_user: "{{ ghost_user_name }}"
   become: yes
 
 - name: install - add configurations
